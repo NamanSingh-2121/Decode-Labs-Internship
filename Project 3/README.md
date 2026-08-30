@@ -27,6 +27,8 @@ the project guidance.
 Example:
 
 `Python, SQL, Machine Learning`
+live demo:
+https://namansingh-2121.github.io/Decode-Labs-Internship/Project%203/
 
 ## Output
 
