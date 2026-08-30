@@ -92,7 +92,7 @@ Type 'help' to see the commands I know.
 ## 🌐 Live Demo
 
 **JarvisAi:**  
-https://namansingh-2121.github.io/Decodelabs-Internship-/
+https://namansingh-2121.github.io/Decode-Labs-Internship/Project%201/
 
 
 ---
