@@ -1,0 +1,16 @@
+role,category,skills
+Data Analyst,Data & Analytics,Python|SQL|Excel|Statistics|Pandas|Power BI|Data Visualization
+Data Scientist,Data & Analytics,Python|SQL|Machine Learning|Statistics|Pandas|NumPy|Data Visualization
+Data Engineer,Data & Analytics,Python|SQL|ETL|Apache Spark|Airflow|Data Pipelines|Cloud Computing
+Business Intelligence Developer,Data & Analytics,SQL|Power BI|Tableau|Excel|Data Visualization|Data Modeling|ETL
+Machine Learning Engineer,AI & ML,Python|Machine Learning|TensorFlow|PyTorch|Deep Learning|Statistics|MLOps
+AI Application Developer,AI & ML,Python|APIs|LLMs|Prompt Engineering|Vector Databases|FastAPI|Git
+Backend Developer,Software Engineering,Python|Java|SQL|REST APIs|Databases|Docker|Git
+Frontend Developer,Software Engineering,JavaScript|TypeScript|React|HTML|CSS|UI Design|Git
+Full Stack Developer,Software Engineering,JavaScript|TypeScript|React|Node.js|SQL|REST APIs|Git
+Mobile App Developer,Software Engineering,Kotlin|Java|Android|Swift|iOS|Mobile UI|APIs
+DevOps Engineer,Cloud & Infrastructure,Linux|Docker|Kubernetes|CI/CD|AWS|Terraform|Automation
+Cloud Engineer,Cloud & Infrastructure,AWS|Azure|Linux|Networking|Docker|Terraform|Cloud Security
+Site Reliability Engineer,Cloud & Infrastructure,Linux|Kubernetes|Monitoring|Python|CI/CD|Cloud Computing|Incident Response
+Cybersecurity Analyst,Security,Networking|Linux|Security|SIEM|Threat Analysis|Python|Incident Response
+Security Engineer,Security,Networking|Linux|Cloud Security|IAM|Python|Threat Modeling|Automation

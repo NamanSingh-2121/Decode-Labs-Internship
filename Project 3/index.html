@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkillPath AI | Tech Stack Recommender</title>
+<style>
+:root{--navy:#122033;--blue:#2d6cdf;--cyan:#15a7b7;--paper:#f5f8fb;--white:#fff;--line:#dce5ee;--muted:#64748b;--green:#16805b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--navy);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+.shell{max-width:1120px;margin:auto;padding:28px 20px 55px}
+header{display:flex;justify-content:space-between;align-items:center;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:12px;align-items:center}.mark{width:43px;height:43px;border-radius:12px;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:900}
+.brand strong{font-size:17px}.brand span{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.badge{padding:8px 12px;border:1px solid var(--line);border-radius:20px;background:#fff;font-size:11px;color:var(--muted)}
+.hero{padding:55px 0 35px;max-width:800px}.eyebrow{font-size:11px;font-weight:900;letter-spacing:.16em;color:var(--blue);text-transform:uppercase}
+h1{font-size:clamp(38px,6vw,66px);line-height:1.02;letter-spacing:-.045em;margin:12px 0}
+.hero p{color:var(--muted);line-height:1.7;max-width:700px;margin:0}
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:10px 0 28px}
+.step{background:#fff;border:1px solid var(--line);padding:13px;border-radius:12px}.step b{display:block;font-size:11px}.step small{color:var(--muted);font-size:10px}
+.main{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+.panel h2{font-size:18px;margin:0 0 5px}.sub{font-size:12px;color:var(--muted);line-height:1.55}
+label{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin:20px 0 8px}
+.skillbox{border:1.5px solid var(--line);border-radius:12px;padding:9px;display:flex;gap:7px;flex-wrap:wrap;min-height:55px}
+.skillbox:focus-within{border-color:var(--blue);box-shadow:0 0 0 4px #2d6cdf14}
+input{border:0;outline:0;flex:1;min-width:130px;font:inherit;color:var(--navy)}
+.chip{background:#eaf2ff;color:#245bb8;padding:7px 9px;border-radius:8px;font-size:11px;font-weight:800}.chip button{border:0;background:none;color:inherit;font-weight:900;cursor:pointer;margin-left:4px}
+.notice{font-size:11px;color:var(--muted);margin-top:8px}.notice.ready{color:var(--green)}
+.quick{display:flex;flex-wrap:wrap;gap:6px}.quick button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 9px;color:var(--muted);font-size:10px;cursor:pointer}.quick button:hover{border-color:var(--blue);color:var(--blue)}
+.focus{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;color:var(--navy)}
+.run{width:100%;border:0;border-radius:11px;background:var(--navy);color:#fff;padding:13px;margin-top:20px;font-weight:900;cursor:pointer}.run:disabled{opacity:.35;cursor:not-allowed}
+.demo{margin-top:9px;text-align:center;color:var(--muted);font-size:10px;min-height:15px}
+.output{min-height:540px}.outhead{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:17px}.outhead h2{margin:3px 0;font-size:22px}.count{text-align:right}.count b{font-size:27px;color:var(--blue)}.count small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase}
+.empty{min-height:430px;display:grid;place-items:center;text-align:center;color:var(--muted)}.empty .icon{font-size:45px;margin-bottom:12px}.empty p{max-width:350px;font-size:13px;line-height:1.65}
+.results{display:grid;gap:11px;padding-top:17px}.result{border:1px solid var(--line);border-radius:14px;padding:15px}.result:first-child{border-color:#a9c5ff;background:#fbfdff}
+.row{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center}.rank{width:30px;height:30px;border-radius:9px;background:#edf2f7;display:grid;place-items:center;font-weight:900}.result:first-child .rank{background:var(--blue);color:#fff}
+.role{font-size:15px;font-weight:900}.cat{font-size:10px;color:var(--muted);margin-top:3px}.score{font-weight:900;color:var(--blue);font-size:16px}
+.track{height:6px;background:#edf1f5;border-radius:99px;overflow:hidden;margin:12px 0}.track i{display:block;height:100%;background:var(--blue);border-radius:99px}
+.caption{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin:9px 0 6px}.tags{display:flex;flex-wrap:wrap;gap:5px}.tag{font-size:10px;padding:5px 7px;border-radius:6px;background:#f0f3f7;color:#58677a}.tag.match{background:#e7f6ef;color:var(--green)}
+footer{display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);margin-top:35px;padding-top:18px;color:var(--muted);font-size:10px}
+@media(max-width:820px){.main{grid-template-columns:1fr}.input-panel{position:static}.pipeline{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.shell{padding:18px 13px}.badge{display:none}.pipeline{grid-template-columns:1fr 1fr}footer{display:block;line-height:1.8}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="brand"><div class="mark">SP</div><div><strong>SkillPath AI</strong><span>Project 3 · Recommendation Logic</span></div></div>
+  <div class="badge">CONTENT-BASED MATCHING</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">AI Recommendation Logic</div>
+  <h1>Find the tech path that fits your skills.</h1>
+  <p>Enter at least three skills. SkillPath converts your profile into a weighted feature vector, compares it with the career catalog, and returns the three closest matches.</p>
+</section>
+
+<div class="pipeline">
+  <div class="step"><b>01 · INGESTION</b><small>Read career skill data</small></div>
+  <div class="step"><b>02 · SCORING</b><small>TF-IDF + cosine similarity</small></div>
+  <div class="step"><b>03 · SORTING</b><small>Highest score first</small></div>
+  <div class="step"><b>04 · FILTERING</b><small>Keep Top 3</small></div>
+</div>
+
+<section class="main">
+  <aside class="panel input-panel">
+    <h2>Your profile</h2>
+    <div class="sub">Add three or more distinct skills. Use the quick picks or type your own.</div>
+
+    <label>Skills / interests</label>
+    <div class="skillbox" id="skillbox"><input id="skillInput" placeholder="e.g. Python"></div>
+    <div id="notice" class="notice">0 skills added · 3 more required</div>
+
+    <label>Optional focus</label>
+    <select id="focus" class="focus">
+      <option value="">All career areas</option>
+      <option>Data & Analytics</option>
+      <option>AI & ML</option>
+      <option>Software Engineering</option>
+      <option>Cloud & Infrastructure</option>
+      <option>Security</option>
+    </select>
+
+    <label>Quick add</label>
+    <div class="quick" id="quick"></div>
+
+    <button id="run" class="run" disabled>Run Recommendation</button>
+    <div id="demo" class="demo"></div>
+  </aside>
+
+  <section class="panel output">
+    <div class="outhead">
+      <div><div class="eyebrow">Recommendation output</div><h2 id="headline">Waiting for your profile</h2></div>
+      <div class="count"><b id="best">—</b><small>best match</small></div>
+    </div>
+    <div id="empty" class="empty"><div><div class="icon">◎</div><p>Your results will appear here after the similarity engine compares your skills with the career catalog.</p></div></div>
+    <div id="results" class="results" style="display:none"></div>
+  </section>
+</section>
+
+<footer><span>SkillPath AI · Project 3</span><span>TF-IDF · Cosine Similarity · Top-3 Ranking</span></footer>
+</div>
+
+<script>
+const DATA=[
+["Data Analyst","Data & Analytics","Python|SQL|Excel|Statistics|Pandas|Power BI|Data Visualization"],
+["Data Scientist","Data & Analytics","Python|SQL|Machine Learning|Statistics|Pandas|NumPy|Data Visualization"],
+["Data Engineer","Data & Analytics","Python|SQL|ETL|Apache Spark|Airflow|Data Pipelines|Cloud Computing"],
+["Business Intelligence Developer","Data & Analytics","SQL|Power BI|Tableau|Excel|Data Visualization|Data Modeling|ETL"],
+["Machine Learning Engineer","AI & ML","Python|Machine Learning|TensorFlow|PyTorch|Deep Learning|Statistics|MLOps"],
+["AI Application Developer","AI & ML","Python|APIs|LLMs|Prompt Engineering|Vector Databases|FastAPI|Git"],
+["Backend Developer","Software Engineering","Python|Java|SQL|REST APIs|Databases|Docker|Git"],
+["Frontend Developer","Software Engineering","JavaScript|TypeScript|React|HTML|CSS|UI Design|Git"],
+["Full Stack Developer","Software Engineering","JavaScript|TypeScript|React|Node.js|SQL|REST APIs|Git"],
+["Mobile App Developer","Software Engineering","Kotlin|Java|Android|Swift|iOS|Mobile UI|APIs"],
+["DevOps Engineer","Cloud & Infrastructure","Linux|Docker|Kubernetes|CI/CD|AWS|Terraform|Automation"],
+["Cloud Engineer","Cloud & Infrastructure","AWS|Azure|Linux|Networking|Docker|Terraform|Cloud Security"],
+["Site Reliability Engineer","Cloud & Infrastructure","Linux|Kubernetes|Monitoring|Python|CI/CD|Cloud Computing|Incident Response"],
+["Cybersecurity Analyst","Security","Networking|Linux|Security|SIEM|Threat Analysis|Python|Incident Response"],
+["Security Engineer","Security","Networking|Linux|Cloud Security|IAM|Python|Threat Modeling|Automation"]
+];
+
+const QUICK=["Python","SQL","Machine Learning","JavaScript","React","AWS","Linux","Docker","Statistics","Git"];
+let selected=[];
+const input=document.getElementById("skillInput"), box=document.getElementById("skillbox"), notice=document.getElementById("notice"), run=document.getElementById("run");
+const results=document.getElementById("results"), empty=document.getElementById("empty"), headline=document.getElementById("headline"), best=document.getElementById("best");
+
+function tokenize(text){return text.toLowerCase().replace(/[^a-z0-9+#.]+/g," ").trim().split(/\s+/).filter(Boolean)}
+function addSkill(value){let s=value.trim();if(!s)return;if(!selected.some(x=>x.toLowerCase()===s.toLowerCase()))selected.push(s);input.value="";renderSkills()}
+function renderSkills(){
+ box.querySelectorAll(".chip").forEach(x=>x.remove());
+ selected.forEach((s,i)=>{let chip=document.createElement("span");chip.className="chip";chip.textContent=s;let b=document.createElement("button");b.textContent="×";b.onclick=()=>{selected.splice(i,1);renderSkills()};chip.appendChild(b);box.insertBefore(chip,input)});
+ let n=selected.length;
+ notice.textContent=n<3?`${n} skill${n===1?"":"s"} added · ${3-n} more required`:`${n} skills ready · recommendation can run`;
+ notice.classList.toggle("ready",n>=3);run.disabled=n<3;
+}
+QUICK.forEach(q=>{let b=document.createElement("button");b.textContent="+ "+q;b.onclick=()=>addSkill(q);document.getElementById("quick").appendChild(b)});
+input.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===","){e.preventDefault();addSkill(input.value)}if(e.key==="Backspace"&&!input.value&&selected.length){selected.pop();renderSkills()}});
+box.onclick=()=>input.focus();
+
+function buildTfIdf(docs){
+ const tokens=docs.map(tokenize), vocab=[...new Set(tokens.flat())], N=docs.length, df={};
+ vocab.forEach(t=>df[t]=tokens.filter(d=>d.includes(t)).length);
+ const idf=t=>Math.log((N+1)/(df[t]+1))+1;
+ return function vector(text){
+   const ts=tokenize(text), counts={};ts.forEach(t=>counts[t]=(counts[t]||0)+1);
+   const total=ts.length||1;
+   return vocab.map(t=>(counts[t]||0)/total*idf(t));
+ };
+}
+function cosine(a,b){let dot=0,aa=0,bb=0;for(let i=0;i<a.length;i++){dot+=a[i]*b[i];aa+=a[i]*a[i];bb+=b[i]*b[i]}return aa&&bb?dot/(Math.sqrt(aa)*Math.sqrt(bb)):0}
+
+const docs=DATA.map(r=>`${r[0]} ${r[1]} ${r[2].replaceAll("|"," ")}`);
+const vector=buildTfIdf(docs), roleVectors=docs.map(vector);
+
+function recommend(){
+ const profile=vector(selected.join(" "));
+ const chosenFocus=document.getElementById("focus").value;
+ return DATA.map((r,i)=>{
+   const roleSkills=r[2].split("|");
+   const mine=selected.map(x=>x.toLowerCase());
+   let score=cosine(profile,roleVectors[i]);
+   if(chosenFocus && r[1]===chosenFocus) score=Math.min(1,score+0.035);
+   const matched=roleSkills.filter(x=>mine.includes(x.toLowerCase()));
+   const next=roleSkills.filter(x=>!mine.includes(x.toLowerCase())).slice(0,4);
+   return {role:r[0],cat:r[1],score,matched,next};
+ }).sort((a,b)=>b.score-a.score||a.role.localeCompare(b.role)).slice(0,3);
+}
+
+function show(items){
+ empty.style.display="none";results.style.display="grid";results.innerHTML="";
+ items.forEach((r,i)=>{
+   const pct=Math.round(r.score*100);
+   const card=document.createElement("article");card.className="result";
+   card.innerHTML=`<div class="row"><div class="rank">${i+1}</div><div><div class="role">${r.role}</div><div class="cat">${r.cat}</div></div><div class="score">${pct}%</div></div>
+   <div class="track"><i style="width:${pct}%"></i></div>
+   <div class="caption">Matched skills</div>
+   <div class="tags">${(r.matched.length?r.matched:["No exact overlap"]).map(x=>`<span class="tag ${r.matched.length?"match":""}">${x}</span>`).join("")}</div>
+   <div class="caption">Skills to explore</div>
+   <div class="tags">${r.next.map(x=>`<span class="tag">${x}</span>`).join("")}</div>`;
+   results.appendChild(card);
+ });
+ headline.textContent=items[0]?`${items[0].role} is the strongest match`:"No recommendation";
+ best.textContent=items[0]?Math.round(items[0].score*100)+"%":"—";
+}
+run.onclick=()=>{run.disabled=true;document.getElementById("demo").textContent="Ingestion → Scoring → Sorting → Filtering…";setTimeout(()=>{show(recommend());document.getElementById("demo").textContent="15 career items compared · Top 3 returned";run.disabled=false},500)};
+renderSkills();
+</script>
+</body>
+</html>
